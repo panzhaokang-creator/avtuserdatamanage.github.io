@@ -1,8 +1,0 @@
-{
-  "name": "AVT iClean",
-  "short_name": "应用",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000"
-}
