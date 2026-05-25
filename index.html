@@ -230,11 +230,6 @@
                                 <input type="email" id="email" required placeholder="example@domain.com" 
                                        class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-500 transition-colors">
                             </div>
-                            <div>
-                                <button type="button" onclick="" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-lg transition-all flex items-center gap-2">
-                                    发送 <i class="fas fa-arrow-right"></i>
-                                </button>
-                            </div>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
@@ -315,12 +310,12 @@
                             </h4>
                             <ul class="text-xs text-gray-300 space-y-2 list-disc list-inside">
                                 <li>申请提交后，为防止恶意篡改，我们有 14 天的数据保留冷静期。冷静期内您可以随时终止申请。</li>
-                                <li>冷静期结束后，数据将开始进行不可逆转物理覆写，极盾安全中心将无法帮助您恢复任何信息。</li>
-                                <li>极盾安全中心仍需依法保留部分法律规定的财务交易记录。</li>
+                                <li>冷静期结束后，数据将开始进行不可逆转物理覆写，文图跃迁安全中心将无法帮助您恢复任何信息。</li>
+                                <li>文图跃迁安全中心仍需依法保留部分法律规定的财务交易记录。</li>
                             </ul>
                             <label class="flex items-start gap-3 mt-4 cursor-pointer">
                                 <input type="checkbox" id="confirmLaw" required class="mt-1 accent-red-500">
-                                <span class="text-xs text-gray-400">我已完全理解上述风险，并授权极盾安全中心销毁我的上述数据。</span>
+                                <span class="text-xs text-gray-400">我已完全理解上述风险，并授权文图跃迁安全中心销毁我的上述数据。</span>
                             </label>
                         </div>
 
@@ -393,7 +388,7 @@
                         <i id="faq-icon-1" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
                     </button>
                     <div id="faq-content-1" class="hidden p-6 pt-0 border-t border-gray-800/50 text-sm text-gray-400 leading-relaxed">
-                        在您通过邮箱二次验证通过后，将进入 14 天的安全冷静期。在此期间，您可以随时一键中止删除。冷静期结束后，数据将被从极盾生产库中彻底移除，由于服务器的多重容灾特性，备份数据的完全物理降解与覆写最长需要 30 天时间。
+                        在您通过邮箱二次验证通过后，将进入 14 天的安全冷静期。在此期间，您可以随时一键中止删除。冷静期结束后，数据将被从文图跃迁生产库中彻底移除，由于服务器的多重容灾特性，备份数据的完全物理降解与覆写最长需要 30 天时间。
                     </div>
                 </div>
                 <!-- FAQ 2 -->
@@ -428,7 +423,7 @@
                 <i class="fas fa-shield-halved text-brand-500"></i> 文图跃迁安全中心
             </div>
             <p class="max-w-md mx-auto text-xs">
-                本中心已获得欧盟 GDPR 与加州 CCPA 双重合规证书。极盾安全中心致力于通过先进的数据科学与加密技术保障您的互联网基本人权。
+                本中心已获得欧盟 GDPR 与加州 CCPA 双重合规证书。文图跃迁安全中心致力于通过先进的数据科学与加密技术保障您的互联网基本人权。
             </p>
             <div class="flex justify-center gap-6 text-xs">
                 <a href="javascript:void(0);" class="hover:underline">用户许可协议</a>
@@ -530,8 +525,8 @@
 
             const subject = encodeURIComponent("文图跃迁数据删除申请报告 - GDPR/CCPA");
             const body = encodeURIComponent(
-                `你好，极盾安全与数据合规部：\n\n` +
-                `本人因隐私顾虑，正式向极盾申请数据抹除。具体信息如下：\n` +
+                `你好，文图跃迁安全与数据合规部：\n\n` +
+                `本人因隐私顾虑，正式向文图跃迁申请数据抹除。具体信息如下：\n` +
                 `-----------------------------------------\n` +
                 `【账户注册邮箱】：${email}\n` +
                 `【账户 ID】：${accId}\n` +
@@ -546,7 +541,7 @@
                 `申请人签字（电签）：___________________`
             );
 
-            window.location.href = `mailto:privacy@shieldarc.org?subject=${subject}&body=${body}`;
+            window.location.href = `mailto:panzhaokang@avt-ai.com?subject=${subject}&body=${body}`;
         }
 
         // 表单模拟提交
