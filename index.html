@@ -21,7 +21,6 @@
         *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e5e7eb; }
         html { -webkit-text-size-adjust: 100%; tab-size: 4; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"; }
         body { margin: 0; line-height: inherit; }
-        a { color: inherit; text-decoration: inherit; }
         button { cursor: pointer; font-family: inherit; font-size: 100%; line-height: inherit; color: inherit; margin: 0; padding: 0; }
         input, textarea { font-family: inherit; font-size: 100%; line-height: inherit; color: inherit; margin: 0; padding: 0; }
         h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; }
@@ -221,6 +220,35 @@
         .scroll-mt-20 { scroll-margin-top: 5rem; }
         .selection\:bg-brand-500 ::selection { background-color: #22c55e; }
         .selection\:text-white ::selection { color: #fff; }
+
+        /* 表单输入框样式修复 - 确保输入文字始终可见 */
+        input, textarea, select {
+            color: #fff !important;
+            -webkit-text-fill-color: #000 !important;
+            caret-color: #22c55e !important;
+        }
+        /* 修复浏览器自动填充覆盖背景色问题 */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:hover,
+        textarea:-webkit-autofill:focus,
+        textarea:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 1000px #111827 inset !important;
+            -webkit-text-fill-color: #fff !important;
+            box-shadow: 0 0 0 1000px #111827 inset !important;
+            background-color: transparent !important;
+            background-clip: content-box !important;
+            border-color: #1f2937 !important;
+        }
+        /* 输入框占位符颜色 */
+        input::placeholder, textarea::placeholder {
+            color: #6b7280 !important;
+            -webkit-text-fill-color: #6b7280 !important;
+            opacity: 1;
+        }
         .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
         .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
         .md\:flex { display: flex; }
@@ -331,7 +359,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-white mb-3">最小权限与访问控制</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        我们严格遵守“最小可用原则”，仅限经授权的岗位在特定安全沙箱中访问必要的信息，且所有读取行为均伴随实时审计日志，杜绝内部泄露风险。
+                        我们严格遵守"最小可用原则"，仅限经授权的岗位在特定安全沙箱中访问必要的信息，且所有读取行为均伴随实时审计日志，杜绝内部泄露风险。
                     </p>
                 </div>
                 <!-- 卡片 3 -->
@@ -341,7 +369,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-white mb-3">合规性与被遗忘权</h3>
                     <p class="text-gray-400 text-sm leading-relaxed">
-                        全面支持 GDPR 的“被遗忘权”以及 CCPA 的相关诉求。您有权随时提出数据销毁请求，我们将在收到请求后的法定工作日内彻底清空您的一切痕迹。
+                        全面支持 GDPR 的"被遗忘权"以及 CCPA 的相关诉求。您有权随时提出数据销毁请求，我们将在收到请求后的法定工作日内彻底清空您的一切痕迹。
                     </p>
                 </div>
             </div>
@@ -359,7 +387,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center gap-3">
                             <i class="fas fa-check-circle text-brand-500"></i>
-                            <span class="text-sm text-gray-300">删除申请平均响应时间：&lt; 15天</span>
+                            <span class="text-sm text-gray-300">删除申请平均响应时间：< 15天</span>
                         </div>
                         <div class="flex items-center gap-3">
                             <i class="fas fa-check-circle text-brand-500"></i>
@@ -417,200 +445,179 @@
                     </div>
                 </div>
 
-                <!-- 交互式表单容器 -->
-                <form id="deleteRequestForm" class="p-8 md:p-10 space-y-8">
-                    
-                    <!-- 步骤一：身份核验 -->
-                    <div id="step-1" class="space-y-6">
-                        <div class="bg-gray-900/40 p-4 rounded-xl border border-gray-800 flex gap-3 text-sm text-gray-300">
-                            <i class="fas fa-circle-info text-trust-600 mt-0.5"></i>
-                            <p>为保障您的账户安全，我们需要先核实您的身份。请输入您的注册邮箱，验证码将发送至该邮箱。</p>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">注册电子邮箱 *</label>
-                                <input type="email" id="email" required placeholder="example@domain.com" 
-                                       class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-500 transition-colors">
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-300 mb-2">验证码 *</label>
-                                <div class="flex gap-2">
-                                    <input type="text" id="captcha" required placeholder="请输入右侧验证码" 
-                                           class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-500 transition-colors">
-                                    <button type="button" onclick="refreshCaptcha()" class="bg-gray-800 hover:bg-gray-700 border border-gray-800 px-4 rounded-lg text-sm text-gray-300 whitespace-nowrap" id="captchaBtn">
-                                        ABCD
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="pt-4 flex justify-end">
-                            <button type="button" onclick="goToStep(2)" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-lg transition-all flex items-center gap-2">
-                                下一步 <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 步骤二：选择范围与理由 -->
-                    <div id="step-2" class="hidden space-y-6">
-                        <div class="space-y-4">
-                            <label class="block text-sm font-medium text-gray-300">您希望删除哪些数据？</label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <label class="flex items-start gap-3 p-4 rounded-xl border border-gray-800 bg-gray-950 cursor-pointer hover:border-gray-700 transition-all">
-                                    <input type="checkbox" checked disabled class="mt-1 accent-brand-500">
-                                    <div>
-                                        <span class="block text-sm font-semibold text-white">核心账户信息 (必选)</span>
-                                        <span class="block text-xs text-gray-400 mt-1">包含注册邮箱、密码、个人资料等基础字段。</span>
-                                    </div>
-                                </label>
-                                <label class="flex items-start gap-3 p-4 rounded-xl border border-gray-800 bg-gray-950 cursor-pointer hover:border-gray-700 transition-all">
-                                    <input type="checkbox" id="delLogs" class="mt-1 accent-brand-500">
-                                    <div>
-                                        <span class="block text-sm font-semibold text-white">使用日志与行为分析</span>
-                                        <span class="block text-xs text-gray-400 mt-1">点击流、安全访问日志、个性化偏好等。</span>
-                                    </div>
-                                </label>
-                                <label class="flex items-start gap-3 p-4 rounded-xl border border-gray-800 bg-gray-950 cursor-pointer hover:border-gray-700 transition-all">
-                                    <input type="checkbox" id="delAssets" class="mt-1 accent-brand-500">
-                                    <div>
-                                        <span class="block text-sm font-semibold text-white">云端存储与应用资产</span>
-                                        <span class="block text-xs text-gray-400 mt-1">您创建的项目、上传的媒体文件和业务数据。</span>
-                                    </div>
-                                </label>
-                                <label class="flex items-start gap-3 p-4 rounded-xl border border-gray-800 bg-gray-950 cursor-pointer hover:border-gray-700 transition-all">
-                                    <input type="checkbox" id="delMarketing" class="mt-1 accent-brand-500">
-                                    <div>
-                                        <span class="block text-sm font-semibold text-white">订阅及营销推送数据</span>
-                                        <span class="block text-xs text-gray-400 mt-1">邮件简报、短信营销名单以及通知渠道。</span>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-300 mb-2">请告诉我们您的删除原因（选填）</label>
-                            <textarea id="reason" rows="3" placeholder="例如：我不再需要此服务、隐私顾虑..." 
-                                      class="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-500 transition-colors"></textarea>
-                        </div>
-
-                        <div class="pt-4 flex justify-between">
-                            <button type="button" onclick="goToStep(1)" class="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-lg transition-all flex items-center gap-2">
-                                <i class="fas fa-arrow-left"></i> 上一步
-                            </button>
-                            <button type="button" onclick="goToStep(3)" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-lg transition-all flex items-center gap-2">
-                                下一步 <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 步骤三：安全提交 -->
-                    <div id="step-3" class="hidden space-y-6">
-                        <div class="bg-red-500/10 border border-red-500/20 p-6 rounded-2xl space-y-4">
-                            <h4 class="text-base font-bold text-red-400 flex items-center gap-2">
-                                <i class="fas fa-triangle-exclamation"></i> 请仔细核实以下法律条款
-                            </h4>
-                            <ul class="text-xs text-gray-300 space-y-2 list-disc list-inside">
-                                <li>申请提交后，为防止恶意篡改，我们有 14 天的数据保留冷静期。冷静期内您可以随时终止申请。</li>
-                                <li>冷静期结束后，数据将开始进行不可逆转物理覆写，文图跃迁安全中心将无法帮助您恢复任何信息。</li>
-                                <li>文图跃迁安全中心仍需依法保留部分法律规定的财务交易记录。</li>
-                            </ul>
-                            <label class="flex items-start gap-3 mt-4 cursor-pointer">
-                                <input type="checkbox" id="confirmLaw" required class="mt-1 accent-red-500">
-                                <span class="text-xs text-gray-400">我已完全理解上述风险，并授权文图跃迁安全中心销毁我的上述数据。</span>
-                            </label>
-                        </div>
-
-                        <!-- 静态 GitHub 部署适配器 -->
-                        <div class="bg-gray-900/60 p-4 rounded-xl border border-gray-800 space-y-2 text-sm text-gray-300">
-                            <p class="font-semibold text-white">💡 GitHub 静态部署提示：</p>
-                            <p class="text-xs">由于此页面是部署在 GitHub 上的静态单页，您可以点击下方“一键生成申请材料”生成预填充邮件，或者直接将自动生成的文本用于新建 GitHub Issue 或提交给管理员。</p>
-                        </div>
-
-                        <div class="pt-4 flex flex-wrap justify-between gap-4">
-                            <button type="button" onclick="goToStep(2)" class="px-6 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-lg transition-all flex items-center gap-2">
-                                <i class="fas fa-arrow-left"></i> 上一步
-                            </button>
-                            <div class="flex gap-3">
-                                <button type="button" onclick="generateEmail()" class="px-5 py-2.5 bg-indigo-650 hover:bg-indigo-600 border border-indigo-700 text-white text-sm font-medium rounded-lg transition-all flex items-center gap-2">
-                                    <i class="fas fa-envelope"></i> 邮件发送申请
-                                </button>
-                                <button type="submit" class="px-6 py-2.5 bg-red-600 hover:bg-red-500 text-white font-medium rounded-lg transition-all flex items-center gap-2 shadow-lg shadow-red-600/20">
-                                    确认并提交申请 <i class="fas fa-paper-plane"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                </form>
-
-                <!-- 模拟成功状态弹窗 / 面板 -->
-                <div id="successPanel" class="hidden p-10 text-center space-y-6">
+                <!-- Formspree 成功消息容器 -->
+                <div data-fs-success class="hidden p-10 text-center space-y-6">
                     <div class="w-20 h-20 mx-auto bg-brand-500/10 border border-brand-500/30 rounded-full flex items-center justify-center text-brand-500 text-3xl animate-bounce">
                         <i class="fas fa-check-circle"></i>
                     </div>
-                    <div class="space-y-2">
-                        <h3 class="text-2xl font-bold text-white">申请已成功受理！</h3>
-                        <p class="text-sm text-gray-400 max-w-md mx-auto">
-                            您的数据删除请求已录入区块链审计通道。系统已向您的邮箱 <span id="targetEmail" class="text-brand-400 font-semibold"></span> 发送了一封安全核验邮件，请在 24 小时内点击邮件内链接以最终激活销毁任务。
-                        </p>
-                    </div>
-                    <div class="bg-gray-900/60 p-4 rounded-xl border border-gray-800 text-left max-w-md mx-auto space-y-2">
-                        <div class="flex justify-between text-xs text-gray-400">
-                            <span>申请流水号:</span>
-                            <span class="font-mono text-white" id="reqId">SR-XXXXXXXX</span>
-                        </div>
-                        <div class="flex justify-between text-xs text-gray-400">
-                            <span>冷静期截止:</span>
-                            <span class="text-white" id="coolDownDate">YYYY-MM-DD</span>
-                        </div>
-                    </div>
-                    <div class="pt-4">
-                        <button type="button" onclick="resetForm()" class="px-6 py-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-lg border border-gray-800 transition-all">
-                            返回重新申请
-                        </button>
-                    </div>
+                    <h3 class="text-2xl font-bold text-white">申请已成功提交</h3>
+                    <p class="text-gray-400 max-w-md mx-auto">我们已收到您的数据删除请求。我们的合规团队将在 15 个工作日内通过您提供的邮箱与您联系，完成身份核验后立即启动数据销毁流程。</p>
+                    <p class="text-xs text-gray-500">请求编号将通过邮件发送给您，请妥善保管。</p>
                 </div>
 
+                <!-- Formspree 表单错误消息容器 -->
+                <div data-fs-error class="hidden p-10 text-center space-y-4">
+                    <div class="w-20 h-20 mx-auto bg-red-500/10 border border-red-500/30 rounded-full flex items-center justify-center text-red-500 text-3xl">
+                        <i class="fas fa-circle-exclamation"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">提交失败</h3>
+                    <p class="text-gray-400 max-w-md mx-auto">请检查表单中的错误信息并重试。如问题持续存在，请联系我们的支持团队。</p>
+                </div>
+
+                <!-- 表单主体 -->
+                <form id="delete-form" class="p-8 md:p-10 space-y-8">
+                    <!-- 步骤 1: 身份核验 -->
+                    <div id="step-1" class="space-y-6">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-sm">1</div>
+                            <h3 class="text-lg font-semibold text-white">身份核验信息</h3>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="fullname" class="block text-sm font-medium text-gray-300 mb-2">真实姓名 <span class="text-red-500">*</span></label>
+                                <input type="text" id="fullname" name="fullname" data-fs-field required
+                                    class="w-full px-4 py-3 bg-gray-900/80 border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors"
+                                    placeholder="请输入您的真实姓名">
+                                <span data-fs-error="fullname" class="text-xs text-red-400 mt-1 block"></span>
+                            </div>
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-300 mb-2">电子邮箱 <span class="text-red-500">*</span></label>
+                                <input type="email" id="email" name="email" data-fs-field required
+                                    class="w-full px-4 py-3 bg-gray-900/80 border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors"
+                                    placeholder="用于接收验证码和确认函">
+                                <span data-fs-error="email" class="text-xs text-red-400 mt-1 block"></span>
+                            </div>
+                            <div>
+                                <label for="phone" class="block text-sm font-medium text-gray-300 mb-2">手机号码</label>
+                                <input type="tel" id="phone" name="phone" data-fs-field
+                                    class="w-full px-4 py-3 bg-gray-900/80 border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors"
+                                    placeholder="选填，用于加速身份核验">
+                                <span data-fs-error="phone" class="text-xs text-red-400 mt-1 block"></span>
+                            </div>
+                            <div>
+                                <label for="account_id" class="block text-sm font-medium text-gray-300 mb-2">账户 ID / 用户名 <span class="text-red-500">*</span></label>
+                                <input type="text" id="account_id" name="account_id" data-fs-field required
+                                    class="w-full px-4 py-3 bg-gray-900/80 border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors"
+                                    placeholder="您注册时使用的账户标识">
+                                <span data-fs-error="account_id" class="text-xs text-red-400 mt-1 block"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步骤 2: 选择删除范围 -->
+                    <div id="step-2" class="space-y-6">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-sm">2</div>
+                            <h3 class="text-lg font-semibold text-white">选择数据删除范围</h3>
+                        </div>
+                        <div class="space-y-4">
+                            <label class="flex items-start gap-4 p-4 bg-gray-900/60 border border-gray-800 rounded-xl cursor-pointer hover:border-red-500/30 transition-colors">
+                                <input type="checkbox" name="delete_profile" value="yes" data-fs-field class="mt-0.5 w-5 h-5 accent-red-500">
+                                <div>
+                                    <span class="font-medium text-white">个人资料与账户信息</span>
+                                    <p class="text-xs text-gray-500 mt-1">包括姓名、邮箱、手机号、头像、个人设置等</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start gap-4 p-4 bg-gray-900/60 border border-gray-800 rounded-xl cursor-pointer hover:border-red-500/30 transition-colors">
+                                <input type="checkbox" name="delete_history" value="yes" data-fs-field class="mt-0.5 w-5 h-5 accent-red-500">
+                                <div>
+                                    <span class="font-medium text-white">使用记录与操作日志</span>
+                                    <p class="text-xs text-gray-500 mt-1">包括浏览历史、搜索记录、操作日志、设备指纹等</p>
+                                </div>
+                            </label>
+                            <label class="flex items-start gap-4 p-4 bg-gray-900/60 border border-gray-800 rounded-xl cursor-pointer hover:border-red-500/30 transition-colors">
+                                <input type="checkbox" name="delete_all" value="yes" data-fs-field class="mt-0.5 w-5 h-5 accent-red-500">
+                                <div>
+                                    <span class="font-medium text-white text-red-400">全选 — 彻底删除所有关联数据</span>
+                                    <p class="text-xs text-gray-500 mt-1">包括以上所有类别及所有云端备份、归档副本</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 步骤 3: 确认与提交 -->
+                    <div id="step-3" class="space-y-6">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-sm">3</div>
+                            <h3 class="text-lg font-semibold text-white">确认与安全验证</h3>
+                        </div>
+                        <div>
+                            <label for="reason" class="block text-sm font-medium text-gray-300 mb-2">删除原因（选填）</label>
+                            <textarea id="reason" name="reason" data-fs-field rows="3"
+                                class="w-full px-4 py-3 bg-gray-900/80 border border-gray-800 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-brand-500 transition-colors"
+                                placeholder="请简要说明您希望删除数据的原因，这将帮助我们改进服务"></textarea>
+                            <span data-fs-error="reason" class="text-xs text-red-400 mt-1 block"></span>
+                        </div>
+                        <div class="p-4 bg-red-950/20 border border-red-500/20 rounded-xl">
+                            <label class="flex items-start gap-3 cursor-pointer">
+                                <input type="checkbox" name="confirm" value="yes" data-fs-field required class="mt-0.5 w-5 h-5 accent-red-500">
+                                <span class="text-sm text-gray-300">
+                                    我确认并理解：此操作将<strong class="text-red-400">永久删除</strong>我选择范围内的所有数据，此操作<strong class="text-red-400">不可撤销</strong>。我已阅读并同意<a href="#" class="text-brand-500 hover:underline">数据删除条款</a>。
+                                </span>
+                            </label>
+                            <span data-fs-error="confirm" class="text-xs text-red-400 mt-1 block"></span>
+                        </div>
+                    </div>
+
+                    <!-- 提交按钮 -->
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-800">
+                        <button type="submit" data-fs-submit-btn
+                            class="flex-1 px-6 py-4 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-red-600/20 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span class="inline-flex items-center gap-2">
+                                <i class="fas fa-trash-can"></i>
+                                提交永久删除申请
+                            </span>
+                        </button>
+                        <button type="reset"
+                            class="px-6 py-4 bg-gray-800 hover:bg-gray-700 text-gray-300 font-medium rounded-xl border border-gray-800 transition-all">
+                            重置表单
+                        </button>
+                    </div>
+                </form>
             </div>
         </section>
 
-        <!-- 4. 常见问题解答 (FAQ) -->
+        <!-- 4. 常见问题 FAQ -->
         <section id="faq" class="scroll-mt-20 max-w-4xl mx-auto">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-white">常见问题解答</h2>
-                <p class="mt-3 text-gray-400">关于隐私、删除冷静期以及数据处理的疑问，您都可以在这里找到答案。</p>
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-3xl font-bold text-white">常见问题</h2>
+                <p class="mt-4 text-gray-400">关于数据删除流程的常见疑问与解答</p>
             </div>
-
             <div class="space-y-4">
-                <!-- FAQ 1 -->
-                <div class="glass-panel rounded-xl overflow-hidden border border-gray-800">
-                    <button onclick="toggleFaq(1)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-900/20 transition-all">
-                        <span class="font-semibold text-white">数据被完全物理抹除需要多久？</span>
-                        <i id="faq-icon-1" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                <div class="glass-panel rounded-2xl overflow-hidden border border-gray-800">
+                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-medium hover:bg-gray-800/30 transition-colors">
+                        <span>数据删除申请的处理周期是多久？</span>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
                     </button>
-                    <div id="faq-content-1" class="hidden p-6 pt-0 border-t border-gray-800/50 text-sm text-gray-400 leading-relaxed">
-                        在您通过邮箱二次验证通过后，将进入 14 天的安全冷静期。在此期间，您可以随时一键中止删除。冷静期结束后，数据将被从文图跃迁生产库中彻底移除，由于服务器的多重容灾特性，备份数据的完全物理降解与覆写最长需要 30 天时间。
+                    <div class="faq-answer px-6 pb-5 hidden text-sm text-gray-400 leading-relaxed">
+                        根据 GDPR 第 17 条及 CCPA 相关规定，我们将在收到有效身份核验后的 15 个工作日内完成数据的彻底删除。对于涉及多个系统的复杂请求，可能延长至 30 个工作日，届时我们会提前与您沟通。
                     </div>
                 </div>
-                <!-- FAQ 2 -->
-                <div class="glass-panel rounded-xl overflow-hidden border border-gray-800">
-                    <button onclick="toggleFaq(2)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-900/20 transition-all">
-                        <span class="font-semibold text-white">我可以只删除一部分数据（比如日志），保留账户登录吗？</span>
-                        <i id="faq-icon-2" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                <div class="glass-panel rounded-2xl overflow-hidden border border-gray-800">
+                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-medium hover:bg-gray-800/30 transition-colors">
+                        <span>删除后能否恢复数据？</span>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
                     </button>
-                    <div id="faq-content-2" class="hidden p-6 pt-0 border-t border-gray-800/50 text-sm text-gray-400 leading-relaxed">
-                        可以。在我们的申请向导步骤二“选择范围”中，您可以根据需求仅勾选不需要的数据类型（例如仅清理行为追踪日志、清理云端存储的非核心项目资产），这不会影响您的常规登录使用。
+                    <div class="faq-answer px-6 pb-5 hidden text-sm text-gray-400 leading-relaxed">
+                        不可以。数据删除操作是不可逆的。一旦完成删除流程，所有相关数据（包括主存储、备份、归档及日志）将被物理销毁，无法以任何方式恢复。请在提交申请前确认您不再需要这些数据。
                     </div>
                 </div>
-                <!-- FAQ 3 -->
-                <div class="glass-panel rounded-xl overflow-hidden border border-gray-800">
-                    <button onclick="toggleFaq(3)" class="w-full text-left p-6 flex justify-between items-center hover:bg-gray-900/20 transition-all">
-                        <span class="font-semibold text-white">如果该网页部署在 GitHub Pages，我填写的申请会被如何处理？</span>
-                        <i id="faq-icon-3" class="fas fa-chevron-down text-gray-400 transition-transform duration-300"></i>
+                <div class="glass-panel rounded-2xl overflow-hidden border border-gray-800">
+                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-medium hover:bg-gray-800/30 transition-colors">
+                        <span>如何确认我的删除请求已执行？</span>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
                     </button>
-                    <div id="faq-content-3" class="hidden p-6 pt-0 border-t border-gray-800/50 text-sm text-gray-400 leading-relaxed">
-                        本页面专为静态托管设计。您提交申请后，页面将在前端自动校验其合法性，并在前端自动生成合规性申请报告。您可以点击“邮件发送申请”或拷贝生成内容，这些内容将安全地通过本地邮件客户端直接投递给项目拥有者的预设合规邮箱。
+                    <div class="faq-answer px-6 pb-5 hidden text-sm text-gray-400 leading-relaxed">
+                        删除流程完成后，我们将向您注册的邮箱发送一份《数据删除确认函》，其中包含删除范围、时间戳及唯一的审计追踪编号。您也可以随时登录安全中心查看请求状态。
+                    </div>
+                </div>
+                <div class="glass-panel rounded-2xl overflow-hidden border border-gray-800">
+                    <button onclick="toggleFAQ(this)" class="w-full px-6 py-5 flex items-center justify-between text-left text-white font-medium hover:bg-gray-800/30 transition-colors">
+                        <span>删除数据是否会影响我正在进行的服务？</span>
+                        <i class="fas fa-chevron-down text-gray-500 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-answer px-6 pb-5 hidden text-sm text-gray-400 leading-relaxed">
+                        是的。一旦删除请求执行完毕，您将无法再登录账户或使用任何关联服务。我们建议您在提交删除申请前，先导出您需要保留的任何数据。
                     </div>
                 </div>
             </div>
@@ -619,240 +626,132 @@
     </main>
 
     <!-- 页脚 -->
-    <footer class="bg-gray-950 border-t border-gray-900 py-12 mt-20 text-sm text-gray-500">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <div class="flex items-center justify-center gap-2 text-white font-bold">
-                <i class="fas fa-shield-halved text-brand-500"></i> 文图跃迁安全中心
+    <footer class="border-t border-gray-800 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="bg-brand-600/20 p-2 rounded-lg border border-brand-500/30">
+                            <i class="fas fa-shield-halved text-brand-500"></i>
+                        </div>
+                        <span class="font-bold text-white">文图跃迁安全中心</span>
+                    </div>
+                    <p class="text-sm text-gray-500">致力于保护用户数据隐私与安全，遵循全球最高合规标准。</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">快速链接</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="javascript:void(0);" onclick="scrollToSection('declaration')" class="hover:text-white transition-colors">安全声明</a></li>
+                        <li><a href="javascript:void(0);" onclick="scrollToSection('visualization')" class="hover:text-white transition-colors">透明度报告</a></li>
+                        <li><a href="javascript:void(0);" onclick="scrollToSection('delete-section')" class="hover:text-white transition-colors">数据删除申请</a></li>
+                        <li><a href="javascript:void(0);" onclick="scrollToSection('faq')" class="hover:text-white transition-colors">常见问题</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-4">法律信息</h4>
+                    <ul class="space-y-2 text-sm text-gray-500">
+                        <li><a href="#" class="hover:text-white transition-colors">隐私政策</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">服务条款</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Cookie 政策</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">数据删除条款</a></li>
+                    </ul>
+                </div>
             </div>
-            <p class="max-w-md mx-auto text-xs">
-                本中心已获得欧盟 GDPR 与加州 CCPA 双重合规证书。文图跃迁安全中心致力于通过先进的数据科学与加密技术保障您的互联网基本人权。
-            </p>
-            <div class="flex justify-center gap-6 text-xs">
-                <a href="javascript:void(0);" class="hover:underline">用户许可协议</a>
-                <a href="javascript:void(0);" class="hover:underline">隐私条例</a>
-                <a href="javascript:void(0);" class="hover:underline">数据出境评估说明</a>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-600">
+                <p>&copy; 2026 文图跃迁安全中心 (ShieldArc Security). 保留所有权利。</p>
             </div>
-            <p class="text-xs">&copy; 2024 ShieldArc Security Inc. 基于开源协议许可.</p>
         </div>
     </footer>
 
-    <!-- JavaScript 脚本区 -->
+    <!-- Formspree Ajax 初始化脚本 -->
     <script>
-        // 验证码生成机制
-        let currentCaptcha = "";
-        function generateRandomCaptcha() {
-            const chars = "1234567890";
-            let result = "";
-            for (let i = 0; i < 4; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return result;
-        }
-        function refreshCaptcha() {
-            currentCaptcha = generateRandomCaptcha();
-            document.getElementById("captchaBtn").innerText = currentCaptcha;
-        }
+        window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+        formspree('initForm', { formElement: '#delete-form', formId: 'mdajlvql' });
+    </script>
+    <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 
-        // 页面平滑滚动
-        function scrollToSection(id) {
-            const el = document.getElementById(id);
-            if (el) {
-                el.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // 步骤导航管理
-        let currentStep = 1;
-        function goToStep(step) {
-            // 基本表单验证（第一步到第二步时校验邮箱和验证码）
-            if (step === 2 && currentStep === 1) {
-                const emailInput = document.getElementById("email");
-                const captchaInput = document.getElementById("captcha");
-                if (!emailInput.checkValidity() || !emailInput.value) {
-                    alert("请填写正确的电子邮箱！");
-                    emailInput.focus();
-                    return;
-                }
-                if (captchaInput.value.toUpperCase() !== currentCaptcha) {
-                    alert("验证码输入有误，请重新输入！");
-                    captchaInput.focus();
-                    return;
-                }
-            }
-
-            // 第二步到第三步校验
-            if (step === 3 && currentStep === 2) {
-                // 无需特殊拦截
-            }
-
-            // 更新DOM显示
-            document.getElementById(`step-${currentStep}`).classList.add("hidden");
-            document.getElementById(`step-${step}`).classList.remove("hidden");
-            
-            // 更新进度条颜色指示器
-            for (let i = 1; i <= 3; i++) {
-                const indicator = document.getElementById(`step${i}-indicator`);
-                if (i === step) {
-                    indicator.className = "w-8 h-8 rounded-full bg-brand-600 text-white flex items-center justify-center font-bold text-sm transition-all";
-                } else if (i < step) {
-                    indicator.className = "w-8 h-8 rounded-full bg-brand-900 text-brand-400 border border-brand-500/30 flex items-center justify-center font-bold text-sm transition-all";
-                } else {
-                    indicator.className = "w-8 h-8 rounded-full bg-gray-800 text-gray-400 flex items-center justify-center font-bold text-sm transition-all";
-                }
-            }
-            currentStep = step;
-        }
-
-        // FAQ 折叠面板逻辑
-        function toggleFaq(id) {
-            const content = document.getElementById(`faq-content-${id}`);
-            const icon = document.getElementById(`faq-icon-${id}`);
-            if (content.classList.contains("hidden")) {
-                content.classList.remove("hidden");
-                icon.classList.add("rotate-180");
-            } else {
-                content.classList.add("hidden");
-                icon.classList.remove("rotate-180");
-            }
-        }
-
-        // 一键生成邮件申请模板
-        function generateEmail() {
-            const email = document.getElementById("email").value || "[您的邮箱]";
-            const delLogs = document.getElementById("delLogs").checked ? "是" : "否";
-            const delAssets = document.getElementById("delAssets").checked ? "是" : "否";
-            const delMarketing = document.getElementById("delMarketing").checked ? "是" : "否";
-            const reason = document.getElementById("reason").value || "无特别说明";
-
-            const subject = encodeURIComponent("文图跃迁数据删除申请报告 - GDPR/CCPA");
-            const body = encodeURIComponent(
-                `你好，文图跃迁安全与数据合规部：\n\n` +
-                `本人因隐私顾虑，正式向文图跃迁申请数据抹除。具体信息如下：\n` +
-                `-----------------------------------------\n` +
-                `【账户注册邮箱】：${email}\n` +
-                `【申请删除类型】：\n` +
-                `  - 核心账户数据：是 (必要)\n` +
-                `  - 日志行为数据：${delLogs}\n` +
-                `  - 云端存储资产：${delAssets}\n` +
-                `  - 营销接收推送：${delMarketing}\n` +
-                `【申请原因】：${reason}\n` +
-                `-----------------------------------------\n` +
-                `本邮件经由安全中心页面校验后签名自动生成，请审核后根据冷静期设置处理。\n\n` +
-                `申请人签字（电签）：___________________`
-            );
-
-            window.location.href = `mailto:panzhaokang@avt-ai.com?subject=${subject}&body=${body}`;
-        }
-
-        // 表单模拟提交
-        document.getElementById("deleteRequestForm").addEventListener("submit", function(e) {
-            e.preventDefault();
-            
-            const checkboxLaw = document.getElementById("confirmLaw");
-            if (!checkboxLaw.checked) {
-                alert("您必须接受法律告知书后，才能继续处理！");
-                return;
-            }
-
-            // 隐藏表单
-            document.getElementById("deleteRequestForm").classList.add("hidden");
-            // 展示成功状态
-            const successPanel = document.getElementById("successPanel");
-            successPanel.classList.remove("hidden");
-
-            // 赋值虚拟信息
-            document.getElementById("targetEmail").innerText = document.getElementById("email").value;
-            // 随机流水号
-            const randReqId = "SR-" + Math.floor(100000 + Math.random() * 900000);
-            document.getElementById("reqId").innerText = randReqId;
-            // 计算冷静期截止时间（14天后）
-            const d = new Date();
-            d.setDate(d.getDate() + 14);
-            const dateStr = d.getFullYear() + "年" + (d.getMonth()+1) + "月" + d.getDate() + "日";
-            document.getElementById("coolDownDate").innerText = dateStr;
-        });
-
-        // 重新启动申请
-        function resetForm() {
-            document.getElementById("deleteRequestForm").reset();
-            document.getElementById("successPanel").classList.add("hidden");
-            document.getElementById("deleteRequestForm").classList.remove("hidden");
-            refreshCaptcha();
-            goToStep(1);
-        }
-
-        // ECharts 数据透明度初始化
-        window.addEventListener('DOMContentLoaded', () => {
-            refreshCaptcha();
-            initCharts();
-        });
-
-        function initCharts() {
-            // 图表一: 托管数据分布饼图
-            const typeDom = document.getElementById('chartType');
-            const typeChart = echarts.init(typeDom, 'dark', { backgroundColor: 'transparent' });
-            const typeOption = {
-                tooltip: { trigger: 'item', formatter: '{b} : {c} ({d}%)' },
+    <!-- ECharts 图表初始化 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // 图表 1: 数据类型分布
+            var chartType = echarts.init(document.getElementById('chartType'));
+            chartType.setOption({
+                tooltip: { trigger: 'item' },
+                legend: { bottom: 0, textStyle: { color: '#9ca3af' } },
                 series: [{
-                    name: '数据类型',
                     type: 'pie',
-                    radius: '70%',
-                    center: ['50%', '50%'],
+                    radius: ['40%', '70%'],
+                    center: ['50%', '45%'],
+                    avoidLabelOverlap: false,
+                    itemStyle: { borderRadius: 6, borderColor: '#111827', borderWidth: 2 },
+                    label: { show: false },
+                    emphasis: { label: { show: true, fontSize: 14, fontWeight: 'bold', color: '#fff' } },
                     data: [
-                        { value: 45, name: '应用业务资产', itemStyle: { color: '#0ea5e9' } },
-                        { value: 25, name: '行为与点击日志', itemStyle: { color: '#22c55e' } },
-                        { value: 20, name: '安全审计日志', itemStyle: { color: '#eab308' } },
-                        { value: 10, name: '账户注册凭证', itemStyle: { color: '#ef4444' } }
-                    ],
-                    label: { show: true, fontSize: 10, color: '#9ca3af' },
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
-                        }
-                    }
+                        { value: 35, name: '个人资料', itemStyle: { color: '#22c55e' } },
+                        { value: 25, name: '使用记录', itemStyle: { color: '#3b82f6' } },
+                        { value: 20, name: '交易数据', itemStyle: { color: '#f59e0b' } },
+                        { value: 12, name: '通讯记录', itemStyle: { color: '#8b5cf6' } },
+                        { value: 8, name: '其他', itemStyle: { color: '#6b7280' } }
+                    ]
                 }]
-            };
-            typeChart.setOption(typeOption);
+            });
 
-            // 图表二: 处理时效柱状图
-            const effDom = document.getElementById('chartEfficiency');
-            const effChart = echarts.init(effDom, 'dark', { backgroundColor: 'transparent' });
-            const effOption = {
+            // 图表 2: 月度结案率
+            var chartEfficiency = echarts.init(document.getElementById('chartEfficiency'));
+            chartEfficiency.setOption({
                 tooltip: { trigger: 'axis' },
+                grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
                 xAxis: {
                     type: 'category',
-                    data: ['Q1', 'Q2', 'Q3', 'Q4'],
-                    axisLabel: { color: '#9ca3af', fontSize: 10 }
+                    data: ['1月', '2月', '3月', '4月', '5月', '6月'],
+                    axisLabel: { color: '#9ca3af' },
+                    axisLine: { lineStyle: { color: '#1f2937' } }
                 },
                 yAxis: {
                     type: 'value',
-                    axisLabel: { formatter: '{value}%', color: '#9ca3af', fontSize: 10 },
-                    splitLine: { lineStyle: { color: '#374151' } }
+                    max: 100,
+                    axisLabel: { color: '#9ca3af', formatter: '{value}%' },
+                    splitLine: { lineStyle: { color: '#1f2937' } }
                 },
                 series: [{
-                    data: [98.2, 99.1, 99.8, 100],
-                    type: 'line',
-                    smooth: true,
-                    lineStyle: { color: '#22c55e', width: 3 },
-                    itemStyle: { color: '#22c55e' },
-                    areaStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                            { offset: 0, color: 'rgba(34, 197, 94, 0.4)' },
-                            { offset: 1, color: 'rgba(34, 197, 94, 0)' }
-                        ])
-                    }
+                    type: 'bar',
+                    barWidth: '50%',
+                    itemStyle: { color: '#22c55e', borderRadius: [4, 4, 0, 0] },
+                    data: [92, 88, 95, 97, 93, 96]
                 }]
-            };
-            effChart.setOption(effOption);
-
-            // 监听窗口大小变化响应式更新图表
-            window.addEventListener('resize', () => {
-                typeChart.resize();
-                effChart.resize();
             });
+
+            // 响应式调整
+            window.addEventListener('resize', function () {
+                chartType.resize();
+                chartEfficiency.resize();
+            });
+        });
+    </script>
+
+    <!-- 通用工具脚本 -->
+    <script>
+        // 平滑滚动到指定 section
+        function scrollToSection(id) {
+            var el = document.getElementById(id);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // FAQ 折叠/展开
+        function toggleFAQ(btn) {
+            var answer = btn.nextElementSibling;
+            var icon = btn.querySelector('i');
+            if (answer.classList.contains('hidden')) {
+                answer.classList.remove('hidden');
+                icon.classList.add('rotate-180');
+            } else {
+                answer.classList.add('hidden');
+                icon.classList.remove('rotate-180');
+            }
         }
     </script>
+
 </body>
 </html>
